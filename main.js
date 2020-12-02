@@ -1,4 +1,78 @@
+let xhr = new XMLHttpRequest();
+let data;
 
+xhr.open("GET", "https://ci-swapi.herokuapp.com/api/");
+xhr.send();
+
+
+
+xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        data = JSON.parse(this.responseText);
+    };
+}
+
+setTimeout(function() {
+    console.log(data);;
+}, 500);
+
+/*
+In this video, we're going to have a look at the setTimeout function to make our code work.
+But first, let's have a look at what's actually happening inside our onreadystatechange() function.
+What I'm going to do is put another "console.log".
+And inside the brackets, type "this.readyState".
+And this will print out the ready state every time the function is invoked.
+As we said, this function gets called more than once, so we should see more than one log to the console.
+And this will happen every single time the function is called, not just when the readyState is equal to 4 and the status is equal to 200.
+So let's refresh that.
+And we can see there that we have a very interesting output.
+Undefined is where we called our console.log(data).
+But as we can see, that's getting called long before we have a readyState of 4, which means that the data isn't actually set until long after we've done our console.log down on line 18.
+So what we could do is use a setTimeout function.
+The setTimeout function takes two parameters.
+The first is a callback function.
+So we can actually write a function in here as our first argument.
+And what we're just going to do is say "console.log(data)".
+And the second argument is a parameter in milliseconds, the time in milliseconds that we want our program to wait for.
+So what we'll do is give it a timeout of 500 milliseconds.
+That should be plenty of time to allow our function to do its thing.
+And as we can see there now, console.log is actually printing our data.
+And that's because we're telling the console.log to wait, to hold off from being executed for 500 milliseconds.
+This gives our "onreadystatechange" function plenty of time to reach a ready state of 4.
+Now what that means really is that we can actually remove our setData function.
+And we can go back to the previous code that we had here, which was "data = JSON.parse(this.responseText)".
+I will also just remove that first console.log because we don't need that anymore.
+We've seen what's happening. Just tidy up a little bit.
+So now you can see that our data is actually being displayed after we set the timeout.
+And that's how we can get our code to wait on execution.
+In our next video, we're going to have a look at how we can make our own callback functions, which is another way around this problem that we're having.
+
+
+/*
+
+let xhr = new XMLHttpRequest();
+let data;
+
+xhr.open("GET", "https://ci-swapi.herokuapp.com/api/");
+xhr.send();
+
+function setData(jsonData) {
+    data = jsonData;
+}
+
+xhr.onreadystatechange = function() {
+    console.log(this.readyState);
+    if (this.readyState == 4 && this.status == 200) {
+        setData(JSON.parse(this.responseText));
+    };
+}
+
+console.log(data);
+
+
+
+
+/*
 let xhr = new XMLHttpRequest();
 let data;
 
