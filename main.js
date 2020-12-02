@@ -17,7 +17,7 @@ setTimeout(function() {
 }, 500);
 
 /*
-In this video, we're going to have a look at the setTimeout function to make our code work.
+We're going to have a look at the setTimeout function to make our code work.
 But first, let's have a look at what's actually happening inside our onreadystatechange() function.
 What I'm going to do is put another "console.log".
 And inside the brackets, type "this.readyState".
