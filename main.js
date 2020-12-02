@@ -1,15 +1,21 @@
+
 let xhr = new XMLHttpRequest();
 let data;
 
 xhr.open("GET", "https://ci-swapi.herokuapp.com/api/");
 xhr.send();
 
+function setData(jsonData) {
+    data = jsonData;
+}
+
 xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        data = this.responseText;
+        setData(JSON.parse(this.responseText));
     };
 }
 
+console.log(data);
 /* The very first thing that we do on line 1 is to create a new instance of the XMLHttpRequest object.
 Then we have the xhr.open() method, and the first argument that we parse in is "GET".
 Since in this instance we want to retrieve data from the Star Wars API, then we're going to use the GET method.
