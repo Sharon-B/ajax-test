@@ -16,6 +16,7 @@ xhr.onreadystatechange = function() {
 }
 
 console.log(data);
+
 /* The very first thing that we do on line 1 is to create a new instance of the XMLHttpRequest object.
 Then we have the xhr.open() method, and the first argument that we parse in is "GET".
 Since in this instance we want to retrieve data from the Star Wars API, then we're going to use the GET method.
@@ -66,4 +67,37 @@ xhr.send();
 Let's go back to our index.html and run it.
 When we do, we can see that we have this JSON object that's been put inside our div.
 So that's working as we expected.
+
+Why doesn't our "console.log(data)" work?
+Well there's a very good reason for this which is that the "onreadystatechange" function only sets the data variable to contain the response text when the ready state equals 4 and the status equals 200.
+Our function has been called five times by the time that our data variable is set, whereas our "console.log" is only ever called once.
+And that will be right after we've run "xhr.send".
+So this means that when we run "console.log(data)", it doesn't have anything in there yet.
+Data is not set until after "console.log" has been called, which is why we're getting a response of undefined.
+Now if I were to move my "console.log" data into line 10, just after where we set the variable, then it works fine.
+Let's just go and confirm that.
+Refresh our page and, as we can see, we have our response text.
+The problem with this is it means that all of the work we need to do with data would have to be done inside the "xhr.onreadystatechange" function, which could make things really messy and complicated because all of the code for our application could potentially end up inside this function.
+So how do we get the data out of here?
+Well one thing that we could do is create a separate function.
+And we can parse our data to that function.
+So I'm just going to delete my "console.log" here.
+And then I'm going to create a new function, which is called "setData".
+I use my parentheses here and open a curly brace.
+And then I'll say that "data =".
+We'll call it JSON data, so I need to actually parse that into the function.
+So "jsonData".
+And that's the name of the variable that I will pass in to the parentheses of the function here.
+So now then what I just need to do is call my function "setData".
+And I need to put "JSON.parse" and then "this.responseText" inside the brackets for "JSON.parse".
+So I'll just put that in there.
+So this will be sending through a JSON parsed object into our setData function.
+Now if I "console.log" my data, put a semicolon, save the file, and refresh the page, then now we can see that we get our JSON object, which we can expand just as we did before.
+This is also called deserializing our JSON.
+But we have the same problem.
+If I move "console.log(data)" to the bottom of the file, it goes back to being undefined again.
+So that means that everything for our function could now end up in the setData function.
+We've just moved the problem away by one step.
+JavaScript has a number of ways of dealing with this: timeouts and callbacks.
+In our next video, we'll have a look at how a timeout works.
 */
