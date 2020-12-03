@@ -1,4 +1,114 @@
-// Pagination:
+//Bug Fixing
+function getData(url, cb) {
+    let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            cb(JSON.parse(this.responseText));
+        }
+    };
+
+    xhr.open("GET", url);
+    xhr.send();
+}
+
+function getTableHeaders(obj) {
+    let tableHeaders = [];
+
+    Object.keys(obj).forEach(function(key) {
+        tableHeaders.push(`<td>${key}</td>`);
+    });
+    return `<tr>${tableHeaders}</tr>`;
+}
+
+function generatePaginationButtons(next, prev) {
+    if (next && prev) {
+        return `<button onclick="writeToDocument('${prev}')">Previous<button>
+                <button onclick="writeToDocument('${next}')">Next<button>`;
+    } else if (next && !prev) {
+        return `<button onclick="writeToDocument('${next}')">Next<button>`;        
+    } else if (!next && prev) {
+        return `<button onclick="writeToDocument('${prev}')">Previous<button>`;
+    } 
+}
+
+
+function writeToDocument(url) {
+    let tableRows = [];
+    let el = document.getElementById("data");
+    el.innerHTML = "";
+    
+    getData(url, function(data) {
+        let pagination;
+        if (data.next || data.previous) {
+            pagination = generatePaginationButtons(data.next, data.previous);
+        }
+
+        data = data.results;
+        let tableHeaders = getTableHeaders(data[0]);
+
+        data.forEach(function(item) {   
+             let dataRow = [];
+
+             Object.keys(item).forEach(function(key) {
+                 let rowData = item[key].toString();
+                 let truncatedData = rowData.substring(0, 15);
+                 dataRow.push(`<td>${truncatedData}</td>`);
+             });
+             tableRows.push(`<tr>${dataRow}</tr>`);
+           
+        });
+
+        el.innerHTML =`<table>${tableHeaders}${tableRows}</table>${pagination}`.replace(/,/g, "");
+    });
+}
+
+/*
+We have a few loose ends just to tie up before our project is completed.
+So let's start by committing our latest changes to Git.
+When we run git status, we can see that our index.html and our main.js have changed.
+If I do a git diff on index.html, it'll show me the changes that I've made.
+I'm happy with that, so I can press Q to quit from the diff screen.
+And now I can add index.html and main.js to the staging area.
+Now I can do a git commit.
+My comment is going to be "Implement pagination".
+Alright, so the next thing that we want to do is fix a display bug.
+Because we're displaying our arrays as strings, the commas that separate the values are also treated as part of that string.
+And they're being displayed here at the top of our table.
+So what we're going to do is use a .replace() method.
+And this takes two arguments.
+Firstly, what we want to find, and secondly, what we want to replace it with.
+And we're going to use a regular expression to find our commas.
+Regular expressions are powerful ways of performing searches.
+We're going to use them later in this course, particularly when it comes to the Django section.
+But for now, we're going to type "/" (which indicates this is a regular expression) ",/".
+So the comma between the two forward slashes is what we want to find.
+We're then going to type g.
+g means to find all instances of the comma.
+Don't just stop at the first one.
+As we said, our replace() method takes two arguments.
+So for the second argument, after the comma after g, we're just going to supply an empty string.
+In other words, we want to find all commas and replace them with an empty string.
+Let's do that now.
+So if I save that, and now refresh the screen, then we can see that all of the commas have been removed, which is perfect. That's exactly what we wanted to happen.
+So now we can commit our changes to Git.
+So I just need to do git add main.js because that's the only thing that's been changed.
+And then I'm going to do a git commit: git commit -m
+And I'm just going to say "Fix bug with commas rendering at the top of the table".
+And that's it.
+Our little project is complete.
+Again, we've covered an awful lot in this lesson.
+Starting with the basics of a URL, we've seen how we can retrieve structured data from Application Programming Interfaces, or APIs, and how we can make use of this data in our own projects.
+We've built a small app to pull information from the Star Wars API and to display it nicely for the user.
+The Star Wars API is an open API, by the way, which means you don't need to register before you use it.
+Many API providers do require that you register, and they'll give you an API key, which is like a password.
+You'll need to send that each time as part of the URL when you make a request.
+So just be aware of that.
+That concludes our lesson on accessing data from external resources.
+In our next lesson, we're going to see how to put all of what we've learned together in one project.
+
+
+/* Pagination:
 
 
 function getData(url, cb) {
