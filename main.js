@@ -41,6 +41,13 @@ The first thing we need to do, then, is determine how to access it.
 So this time, we're going to use a "console.dir".
 "dir" stands for directory.
 We're going to parse in our data.
+
+function writeToDocument(type) {
+    getData(type, function(data) {
+        console.dir(data);
+        document.getElementById("data").innerHTML = data;
+    });
+}
 And this will allow us now to browse through the object and to see its format.
 It's going to print it out and show the properties.
 So we can see there that we have an array called "results".
@@ -104,7 +111,7 @@ But in our next video, we'll get films working as well.
 
 
 /* Write to document/html:
-type is the type that comes from the API, in this case could be people, films, vehicles or species. 
+type is the type that comes from the API, in this case could be people, films, vehicles or species.
 
 const baseURL = "https://ci-swapi.herokuapp.com/api/";
 
