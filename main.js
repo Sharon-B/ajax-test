@@ -1,3 +1,85 @@
+/* Write to document/html:
+type is the type that comes from the API, in this case could be people, films, vehicles or species. */
+
+const baseURL = "https://ci-swapi.herokuapp.com/api/";
+
+function getData(type, cb) {
+    let xhr = new XMLHttpRequest();
+
+
+    xhr.open("GET", baseURL + type + "/");
+    xhr.send();
+
+
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            cb(JSON.parse(this.responseText));
+        }
+    };
+}
+
+function writeToDocument(type) {
+    getData(type, function(data) {
+        document.getElementById("data").innerHTML = data;
+    });
+}
+
+/*
+In this unit, we're going to bring all of this back into the context of our HTML website.
+We have our data printing to the console. Now what we need to do is render it to the document.
+So I'm going to remove my call to getData and create a new function here called "writeToDocument".
+And this is going to take one parameter called "type".
+And when I say "type", I mean the type that comes from the API.
+So that would be a film, people, starships, vehicles, species, so on.
+So what I'm going to do now is to call our getData function.
+And we need to modify that function slightly in a minute because we also want that to take in the type parameter.
+So I'm going to call getData.
+I'm going to parse in the type parameter.
+And then the second argument is going to be our function.
+And rather than calling an external function, I'm going to writean anonymous one this time that uses "document.getElementByID".
+Remember, we did this before.
+It's going to get the div which has the ID of data.
+And it's going to set the innerhtml to the data that gets parsed into this function, which means I actually need to put it in here as well.
+So now we can modify our getData function and parse in a type.
+Now the first thing that I want to do as well is take out our base URL here and move it outside the function.
+I'm going to create a constant and call that "baseURL" so that never changes.
+And then I will assign the string that we have for that that we've been using so far.
+And now inside our open method, instead of the string, what we can actually do is parse in "baseURL + type"
+And this will append the base URL with the type that we're parsing in, so that could be people, films, vehicles, or species.
+Okay, let's go back to our index.html.
+And I'm going to create some buttons.
+Now. there's going to be no styling for this. It's just purely a demonstration.
+So I'm going to create some simple buttons for people, planets, species, starships, vehicles, films.
+And each of these buttons will have an "onclick" event.
+The "onclick" event is going to invoke the "writeToDocument" function that we just created.
+And then we'll parse in a string which is pertinent to the relevant type.
+So for this one, we'll say people first.
+And I'll put "People" as the text that will appear on my button.
+The second one will be planets.
+So onclick = "writeToDocument".
+And we'll send in 'planets' as our argument.
+Then again, put "Planets" as the text that will appear on our button.
+The next one will be species.
+And we'll just jump ahead to when these are completed.
+So just change that to films, and we are complete.
+Very good.
+So back in our JavaScript file, we do need to have a trailing "/" as well after the type, so we'll just put that on.
+And once we're ready, we can run this code, and I need to run it from my index.html file.
+Here are our buttons.
+I just click on that.
+Nothing happens, so let's inspect.
+So I have a semicolon there where I shouldn't have. Let's just go back and correct that.
+Yep, there on line 17 in the argument. Let's take that out.
+We'll refresh our page.
+And now we have adjacent object printing to the screen, which is great. That's exactly what we would want.
+Of course, that data isn't terribly useful to us just yet because all it's telling us is that we have an object.
+In our next video, we'll look at how to unpack the data from this object.
+
+
+
+/* Print To Console
+
 function getData(cb) {
     let xhr = new XMLHttpRequest();
 
