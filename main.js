@@ -1,5 +1,110 @@
+/* Unpacking The Data: */
+
+const baseURL = "https://ci-swapi.herokuapp.com/api/";
+
+function getData(type, cb) {
+    let xhr = new XMLHttpRequest();
+
+
+    xhr.open("GET", baseURL + type + "/");
+    xhr.send();
+
+
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            cb(JSON.parse(this.responseText));
+        }
+    };
+}
+
+function writeToDocument(type) {
+    let el = document.getElementById("data");
+    el.innerHTML = ""; /* each time the button is clicked it resets the innerHTML to an empty string and clears it each time rather than constantly appending onto the end and creating one big list */
+    getData(type, function(data) {
+        data = data.results;
+
+        data.forEach(function(item) {     //so for each element in data we will run this function:
+            el.innerHTML += "<p>" + item.name + "</p>";         /*item.name will display the name. '+=' appends each new name rather than overwriting it each time. putting it all in a paragraph then displays it better. */
+        });
+    });
+}
+
+/* films still not working because it doesn't have a name property 
+
+In our last video, we started getting data printed on the screen.
+Let's start unpacking it.
+It's all stored in one big object, and we're going to have an array of objects for different people.
+And each of those are going to be objects as well.
+So we have a little bit of work to do when unpacking this data.
+The first thing we need to do, then, is determine how to access it.
+So this time, we're going to use a "console.dir".
+"dir" stands for directory.
+We're going to parse in our data.
+And this will allow us now to browse through the object and to see its format.
+It's going to print it out and show the properties.
+So we can see there that we have an array called "results".
+And this contains an array of 10 items.
+10 items, 10 different people in the arrangement from Luke Skywalker down to Obi-Wan Kenobi at the end.
+We also have a URL called "next".
+That's for pagination, so we just show 10 items at a time. When we click on the "next" button, it will show us the next 10 items, and so on and so forth.
+So if we want to display this, then what we need to do is set our innerHTML to "data.results".
+Okay, now if I refresh my page and click on people, I now have 10 objects being rendered.
+So again, they're objects. It's doing what we expect, but they still need to be unpacked a bit further.
+So what we're going to do instead of using "data.results" here is we're going to overwrite our existing data variable with "data.results".
+It just makes our life a little bit easier.
+Just take out the "console.dir". We don't need that. So we do "data = data.results".
+Okay, so now that we have that, what we can do is a for each loop.
+I'm going to say "data.forEach", so for each element in data.
+It's going to run this function.
+It's going to take the item.
+And then I'm just going to take the same code that we used before.
+So I'll just cut and paste the code that we have on line 23 here.
+Paste that in.
+And instead of "data.results", I'm going to say "item".
+So let's run that again.
+And now I'm getting an object again. This time, we're getting one individual object as opposed to 10.
+This means that our for each loop is working; not quite correctly at the moment, but we'll address that in a minute.
+So what we want to do is display the name.
+Now that we have this unpacked into JSON format, we can just do "item.name".
+Let's try that.
+And we can see we have Obi-Wan Kenobi.
+Now that's an issue because we know that the first person in the list is actually Luke Skywalker.
+We've already seen that in the documentation and in the list that we looked at in the console.
+But for the time-being, this is working. I can click on the other buttons. They all work, apart from films.
+The reason is because films doesn't actually have a property called "name", but we'll address this in our next video.
+So we can see then that the reason why only one item has been displayed is because every time I call the "document.getElementByID" innerHTML method, it's overwriting it.
+I need to do a "+=".
+So let's try that.
+There we have it.
+I now have all of the people displayed.
+Now we could improve how that looks if I put in <p> tags surrounding the item name.
+So we'll do an opening <p>, +, and then +, and a closing <p> here.
+So if I do a refresh, click it, and that looks much better.
+But as I click on the other buttons, you can see that all of the information has just been appended on to the page every time.
+And with films, when we click on that, we have a lot of undefined objects here at the end.
+So this is not what we want.
+We want to just display 10 items at a time for clarity.
+And we don't want it all mixed together like that.
+So what we're going to do, then, is I'm going to create a variable called "el", short for element.
+And I'm going to store our data ID in there.
+So "var el = document.getElementByID("data"), just like we're doing below.
+And then every time the button is clicked, I'm going to set the innerHTML of our element to an empty string.
+So that will clear it every time the button is clicked.
+I can just use "el" down here now as well.
+Okay, so let's try that.
+Much better.
+That's displaying exactly as we'd like.
+So we're having 10 items displayed at a time.
+The films aren't working yet. we've explained why that is- because there isn't a name property for films.
+But in our next video, we'll get films working as well.
+
+
+
+
+
 /* Write to document/html:
-type is the type that comes from the API, in this case could be people, films, vehicles or species. */
+type is the type that comes from the API, in this case could be people, films, vehicles or species. 
 
 const baseURL = "https://ci-swapi.herokuapp.com/api/";
 
